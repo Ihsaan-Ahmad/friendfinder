@@ -197,30 +197,28 @@
 
     <script type="text/javascript">
 
-        var config = {
-            ".chosen-select": {},
-            ".chosen-select-deselect": { allow_single_deselect: true },
-            ".chosen-select-no-single": { disable_search_threshold: 10 },
-            ".chosen-select-no-results": { no_results_text: "Oops, nothing found!" },
-            ".chosen-select-width": { width: "95%" }
-        };
+        // var config = {
+        //     ".chosen-select": {},
+        //     ".chosen-select-deselect": { allow_single_deselect: true },
+        //     ".chosen-select-no-single": { disable_search_threshold: 10 },
+        //     ".chosen-select-no-results": { no_results_text: "Oops, nothing found!" },
+        //     ".chosen-select-width": { width: "95%" }
+        // };
 
-        for (var selector in config) {
-            $(selector).chosen(config[selector]);
-        }
+        // for (var selector in config) {
+        //     $(selector).chosen(config[selector]);
+        // }
 
-        $("#submitBtn").on("click", function () {
-
-            function validateForm() {
-                var isValid = true;
-                $(".form-control").each(function () {
-                    if ($(this).val() === "") {
-                        isValid = false;
-                    }
-                });
-                return isValid;
+        $("#submitBtn").on("click", function (event) {
+            event.preventDefault();
+            // Form validation
+            var valid = true;
+            if ($("#name").val() === "" || $("#photo").val() === "") {
+                valid = false;
+            } else if ($("#question1").val() === "empty" || $("#question2").val() === "empty" || $("#question3").val() === "empty" || $("#question4").val() === "empty" || $("#question5").val() === "empty" || $("#question6").val() === "empty" || $("#question7").val() === "empty" || $("#question8").val() === "empty" || $("#question9").val() === "empty" || $("#question10").val() === "empty") {
+                valid = false;
             }
-            if (validateForm()) {
+            if (valid) {
                 var userData = {
                     name: $("#name").val(),
                     photo: $("#photo").val(),
@@ -237,9 +235,10 @@
                         $("#question10").val()
                     ]
                 };
-                var currentURL = window.location.origin;
+                console.log(userData);
+                // var currentURL = window.location.origin;
                 // Ajax call for receiving response after POST req
-                $.post(currentURL + "/api/friends", userData, function (data) {
+                $.post("/api/friends", userData, function (data) {
                     $("#modal").text(data.name);
                     $("#modalPhoto").attr("src", data.photo);
                     $("#modalModal").modal("toggle");
@@ -252,7 +251,7 @@
     </script>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
